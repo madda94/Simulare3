@@ -52,15 +52,17 @@ export class Simulare {
   draw(context) {
     context.clearRect(0, 0, this.width, this.height);
     this.background.draw(context);
+    if (this.scenariu2Time)
     Object.keys(this.ships[0].missilesS2).forEach((key) => {
-      this.ships[0].missilesS2[key].draw();
+      this.ships[0].missilesS2[key].draw(context);
    });
     this.explosions.forEach((explosion) => {
       explosion.draw(context); 
      });
     this.ships[2].draw(context);
+    if (this.scenariu2Time)
     Object.keys(this.ships[1].missilesS2).forEach((key) => {
-      this.ships[1].missilesS2[key].draw2();
+      this.ships[1].missilesS2[key].draw2(context);
     });
     this.explosions2.forEach((explosion) => {
       explosion.draw(context); 
@@ -359,10 +361,10 @@ export class Simulare {
     explosionSize
   ) {
     if (missile && missile.x < shipPos) {
-      missile.speedX = this.speed;
+      missile.speedX = this.speed * 1.5;
       missile.speedY = this.speed * 0.5;
       missile.lightHeadMissile();
-      missile.x += missile.speedX * 1.5;
+      missile.x += missile.speedX;
       missile.y -= missile.speedY;
     } else if (missile && missile.x >= shipPos) {
       if (this.explosionCount < this.maxExplosions) {
@@ -547,17 +549,6 @@ export class Simulare {
 
   scenariu2(context) {
     if (this.scenariu2Time && this.continue) {
-      // Object.keys(this.ships[0].missilesS2).forEach((key) => {
-      //   this.ships[0].missilesS2[key].update();
-      // });
-      // this.explosions.forEach((explosion) => {
-      //   explosion.update(context);
-      //   explosion.draw(context);
-      // });
-      // this.ships[2].draw(context);
-      // Object.keys(this.ships[1].missilesS2).forEach((key) => {
-      //   this.ships[1].missilesS2[key].update2();
-      // });
       this.checkFregataLineCollision_2kmS2();
       this.controlAttackShip0S2(this.ships[0]);
       this.controlAttackShip1S2(this.ships[1]);
@@ -590,10 +581,6 @@ export class Simulare {
       this.smokeParticlesAK726.forEach((particle) => {
         particle.draw(context);
       });
-      // this.explosions2.forEach((explosion) => {
-      //   explosion.update(context);
-      //   explosion.draw(context);
-      // });
       if (
         Object.keys(this.ships[0].missilesS2).length === 0 &&
         Object.keys(this.ships[1].missilesS2).length === 0
